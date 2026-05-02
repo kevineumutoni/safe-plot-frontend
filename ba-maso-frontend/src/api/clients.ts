@@ -1,7 +1,7 @@
 import axios from 'axios'
 import type { LocationQuery, RiskResponse } from '../types'
 
-const BASE = import.meta.env.VITE_API_BASE_URL ?? 'http://localhost:8000'
+const BASE = import.meta.env.VITE_API_BASE_URL ?? 'https://safe-plot-975524235617.us-central1.run.app'
 
 const api = axios.create({ baseURL: BASE, timeout: 20000 })
 

@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react'
-import { Box, VStack, Text } from '@chakra-ui/react'
 import type { RiskColor } from '../../types'
 
 const CFG: Record<RiskColor, { text: string; ring: string; bg: string; glow: string }> = {
@@ -21,6 +20,7 @@ export default function RiskBadge({ color, score, labelRw, labelEn, lang }: Prop
   const c = CFG[color]
   const label = lang === 'rw' ? labelRw : labelEn
 
+  // Animate counter up
   useEffect(() => {
     setDisplayed(0)
     const step = score / 40
@@ -40,20 +40,19 @@ export default function RiskBadge({ color, score, labelRw, labelEn, lang }: Prop
   const offset = circumference * (1 - displayed / 100)
 
   return (
-    <Box
-      bg={c.bg}
-      border={`1px solid ${c.ring}40`}
-      borderRadius="20px"
-      p={5}
-      textAlign="center"
-      boxShadow={c.glow}
-    >
+    <div style={{
+      background: c.bg,
+      border: `1px solid ${c.ring}40`,
+      borderRadius: 20,
+      padding: 20,
+      textAlign: 'center',
+      boxShadow: c.glow,
+    }}>
       {/* SVG circle progress */}
-      <Box position="relative" w={`${size}px`} h={`${size}px`} mx="auto" mb={3}>
+      <div style={{ position: 'relative', width: size, height: size, margin: '0 auto 12px' }}>
         <svg width={size} height={size} style={{ transform: 'rotate(-90deg)' }}>
           <circle cx={cx} cy={cx} r={r} fill="none" stroke="rgba(255,255,255,0.05)" strokeWidth={6} />
-          <circle
-            cx={cx} cy={cx} r={r} fill="none"
+          <circle cx={cx} cy={cx} r={r} fill="none"
             stroke={c.ring} strokeWidth={6}
             strokeDasharray={circumference}
             strokeDashoffset={offset}
@@ -61,36 +60,23 @@ export default function RiskBadge({ color, score, labelRw, labelEn, lang }: Prop
             style={{ transition: 'stroke-dashoffset 0.05s linear', filter: `drop-shadow(0 0 6px ${c.ring})` }}
           />
         </svg>
-
-        <Box
-          position="absolute"
-          top="50%"
-          left="50%"
-          transform="translate(-50%, -50%)"
-          textAlign="center"
-        >
-          <Text fontSize="26px" fontWeight={900} color={c.text} lineHeight={1}>
-            {displayed}
-          </Text>
-          <Text fontSize="9px" color="rgba(255,255,255,0.3)" fontWeight={600}>
-            /100
-          </Text>
-        </Box>
-      </Box>
-
-      {/* Label pill */}
-      <Box
-        display="inline-flex"
-        px={4}
-        py={1}
-        borderRadius="999px"
-        bg={c.bg}
-        border={`1px solid ${c.ring}40`}
-      >
-        <Text fontSize="13px" fontWeight={700} color={c.text} letterSpacing="0.04em">
+        <div style={{
+          position: 'absolute', top: '50%', left: '50%',
+          transform: 'translate(-50%,-50%)', textAlign: 'center',
+        }}>
+          <div style={{ fontSize: 26, fontWeight: 900, color: c.text, lineHeight: 1 }}>{displayed}</div>
+          <div style={{ fontSize: 9, color: 'rgba(255,255,255,0.3)', fontWeight: 600 }}>/100</div>
+        </div>
+      </div>
+      {/* Label */}
+      <div style={{
+        display: 'inline-flex', padding: '4px 16px', borderRadius: 999,
+        background: c.bg, border: `1px solid ${c.ring}40`,
+      }}>
+        <span style={{ fontSize: 13, fontWeight: 700, color: c.text, letterSpacing: '0.04em' }}>
           {label}
-        </Text>
-      </Box>
-    </Box>
+        </span>
+      </div>
+    </div>
   )
 }

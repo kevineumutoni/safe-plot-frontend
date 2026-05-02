@@ -1,4 +1,3 @@
-import { Box, HStack, Text } from '@chakra-ui/react'
 import type { FloodAlert } from '../../types'
 
 const LEVEL = {
@@ -9,36 +8,25 @@ const LEVEL = {
 }
 
 export default function FloodAlertBanner({ alert, lang }: { alert: FloodAlert; lang: string }) {
-  const cfg = LEVEL[alert.alert_level as keyof typeof LEVEL] ?? LEVEL.none
+  const cfg = LEVEL[alert.alert_level] ?? LEVEL.none
   const text = lang === 'rw' ? alert.interpretation_rw : alert.interpretation_en
   const label = lang === 'rw' ? cfg.labelRw : cfg.labelEn
 
   return (
-    <Box
-      bg={cfg.bg}
-      border={`1px solid ${cfg.border}`}
-      borderRadius="14px"
-      p="14px 16px"
-    >
-      <HStack gap={2} mb={2}>
-        <Text fontSize="lg">{cfg.icon}</Text>
-        <Text
-          fontSize="xs"
-          fontWeight={700}
-          color={cfg.color}
-          letterSpacing="0.04em"
-        >
+    <div style={{
+      background: cfg.bg, border: `1px solid ${cfg.border}`,
+      borderRadius: 14, padding: '14px 16px',
+    }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
+        <span style={{ fontSize: 18 }}>{cfg.icon}</span>
+        <span style={{ fontSize: 12, fontWeight: 700, color: cfg.color, letterSpacing: '0.04em' }}>
           {label}
-        </Text>
-      </HStack>
-
-      <Text fontSize="13px" color="rgba(232,245,238,0.7)" lineHeight={1.6} m={0}>
-        {text}
-      </Text>
-
-      <Text fontSize="10px" color="rgba(232,245,238,0.3)" mt={2}>
+        </span>
+      </div>
+      <p style={{ fontSize: 13, color: 'rgba(232,245,238,0.7)', lineHeight: 1.6, margin: 0 }}>{text}</p>
+      <p style={{ fontSize: 10, color: 'rgba(232,245,238,0.3)', marginTop: 6 }}>
         {lang === 'rw' ? 'Imvura' : 'Rainfall'}: {alert.rainfall_24h_mm}mm / 24h · {alert.rainfall_48h_mm}mm / 48h
-      </Text>
-    </Box>
+      </p>
+    </div>
   )
 }

@@ -1,4 +1,3 @@
-import { HStack, Button } from '@chakra-ui/react'
 import { useTranslation } from 'react-i18next'
 import { useAppStore } from '../../store/useAppStore'
 import type { Language } from '../../types'
@@ -13,35 +12,29 @@ export default function LanguageToggle() {
   }
 
   return (
-    <HStack
-      display="inline-flex"
-      bg="var(--input-bg)"
-      border="1px solid var(--input-border)"
-      borderRadius="10px"
-      p="2px"
-      gap={0}
-    >
+    <div style={{
+      display: 'inline-flex',
+      background: 'var(--input-bg)',
+      border: '1px solid var(--input-border)',
+      borderRadius: 10, padding: 2,
+    }}>
       {(['rw', 'en'] as Language[]).map(lang => (
-        <Button
+        <button
           key={lang}
           onClick={() => toggle(lang)}
-          size="xs"
-          px={3}
-          py={1}
-          borderRadius="8px"
-          border="none"
-          bg={language === lang ? 'var(--green)' : 'transparent'}
-          color={language === lang ? 'white' : 'var(--text-dim)'}
-          fontSize="11px"
-          fontWeight={700}
-          letterSpacing="0.08em"
-          fontFamily="'JetBrains Mono', monospace"
-          transition="all 0.15s"
-          _hover={{ bg: language === lang ? 'var(--green)' : 'rgba(255,255,255,0.05)' }}
+          style={{
+            padding: '4px 12px', borderRadius: 8,
+            border: 'none', cursor: 'pointer',
+            background: language === lang ? 'var(--green)' : 'transparent',
+            color: language === lang ? 'white' : 'var(--text-dim)',
+            fontSize: 11, fontWeight: 700, letterSpacing: '0.08em',
+            fontFamily: "'JetBrains Mono', monospace",
+            transition: 'all 0.15s',
+          }}
         >
           {lang.toUpperCase()}
-        </Button>
+        </button>
       ))}
-    </HStack>
+    </div>
   )
 }
