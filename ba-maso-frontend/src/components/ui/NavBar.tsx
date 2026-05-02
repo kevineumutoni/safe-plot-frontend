@@ -1,4 +1,3 @@
-import { Box, HStack, Button, Text, Badge } from '@chakra-ui/react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import LanguageToggle from './LanguageToggle'
@@ -13,107 +12,75 @@ export default function NavBar({ showBack }: Props) {
   const { history } = useAppStore()
 
   return (
-    <Box
-      as="nav"
-      display="flex"
-      alignItems="center"
-      justifyContent="space-between"
-      px={5}
-      py="10px"
-      bg="var(--nav-bg)"
-      backdropFilter="blur(12px)"
-      borderBottom="1px solid var(--border)"
-      flexShrink={0}
-      zIndex={10}
-    >
-      {/* Logo */}
-      <HStack
-        gap={2}
-        cursor="pointer"
+    <nav style={{
+      display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+      padding: '10px 20px',
+      background: 'var(--nav-bg)',
+      backdropFilter: 'blur(12px)',
+      borderBottom: '1px solid var(--border)',
+      flexShrink: 0, zIndex: 10,
+    }}>
+      <div
+        style={{ display: 'flex', alignItems: 'center', gap: 10, cursor: 'pointer' }}
         onClick={() => navigate('/')}
       >
-        <Box
-          w="8px"
-          h="8px"
-          borderRadius="full"
-          bg="var(--green)"
-          boxShadow="var(--green-glow)"
-        />
-        <Text fontWeight={800} fontSize="17px" letterSpacing="-0.02em" color="var(--text)">
+        <div style={{
+          width: 8, height: 8, borderRadius: '50%',
+          background: 'var(--green)',
+          boxShadow: 'var(--green-glow)',
+        }} />
+        <span style={{ fontWeight: 800, fontSize: 17, letterSpacing: '-0.02em', color: 'var(--text)' }}>
           Ba Maso
-        </Text>
-        <Badge
-          px="7px"
-          py="2px"
-          borderRadius="6px"
-          bg="var(--green-dim)"
-          border="1px solid var(--border-g)"
-          fontSize="9px"
-          fontWeight={700}
-          color="var(--green)"
-          letterSpacing="0.08em"
-          variant="outline"
-        >
-          KIGALI
-        </Badge>
-      </HStack>
+        </span>
+        <span style={{
+          padding: '2px 7px', borderRadius: 6,
+          background: 'var(--green-dim)',
+          border: '1px solid var(--border-g)',
+          fontSize: 9, fontWeight: 700, color: 'var(--green)',
+          letterSpacing: '0.08em',
+        }}>KIGALI</span>
+      </div>
 
-      {/* Right controls */}
-      <HStack gap={2}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
         <ThemeToggle />
         <LanguageToggle />
-
         {showBack ? (
           <NavBtn onClick={() => navigate(-1 as any)}>← {t('home')}</NavBtn>
         ) : (
           <>
             <NavBtn onClick={() => navigate('/search')}>{t('manual_entry')}</NavBtn>
             <NavBtn onClick={() => navigate('/history')}>
-              <HStack gap={1} as="span">
-                <span>{t('history')}</span>
-                {history.length > 0 && (
-                  <Box
-                    as="span"
-                    ml={1}
-                    bg="var(--green)"
-                    color="white"
-                    borderRadius="full"
-                    w="16px"
-                    h="16px"
-                    display="inline-flex"
-                    alignItems="center"
-                    justifyContent="center"
-                    fontSize="9px"
-                    fontWeight={800}
-                  >
-                    {history.length}
-                  </Box>
-                )}
-              </HStack>
+              {t('history')}
+              {history.length > 0 && (
+                <span style={{
+                  marginLeft: 5, background: 'var(--green)', color: 'white',
+                  borderRadius: '50%', width: 16, height: 16,
+                  display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
+                  fontSize: 9, fontWeight: 800,
+                }}>{history.length}</span>
+              )}
             </NavBtn>
           </>
         )}
-      </HStack>
-    </Box>
+      </div>
+    </nav>
   )
 }
 
 function NavBtn({ onClick, children }: { onClick: () => void; children: React.ReactNode }) {
   return (
-    <Button
+    <button
       onClick={onClick}
-      variant="ghost"
-      size="sm"
-      px={3}
-      borderRadius="8px"
-      color="var(--text-dim)"
-      fontSize="12px"
-      fontWeight={600}
-      fontFamily="'Sora', sans-serif"
-      transition="all 0.15s"
-      _hover={{ color: 'var(--text)', bg: 'transparent' }}
+      style={{
+        padding: '6px 12px', borderRadius: 8, border: 'none',
+        background: 'transparent', color: 'var(--text-dim)',
+        fontSize: 12, fontWeight: 600, cursor: 'pointer',
+        fontFamily: "'Sora', sans-serif", transition: 'all 0.15s',
+      }}
+      onMouseEnter={e => (e.currentTarget.style.color = 'var(--text)')}
+      onMouseLeave={e => (e.currentTarget.style.color = 'var(--text-dim)')}
     >
       {children}
-    </Button>
+    </button>
   )
 }

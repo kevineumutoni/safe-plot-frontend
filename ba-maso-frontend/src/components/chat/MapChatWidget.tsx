@@ -1,5 +1,4 @@
 import { useState, useEffect, useRef } from 'react'
-import { Box, VStack, HStack, Text } from '@chakra-ui/react'
 import BaMasoLoader from '../ui/Loader'
 
 const QA = {
@@ -109,70 +108,22 @@ const QA = {
 
 interface Props { lang: string }
 
-// Extracted native button to fully sidestep Chakra's Box polymorphic type issues
-function QuickBtn({
-  onClick,
-  isDisabled,
-  children,
-}: {
-  onClick: () => void
-  isDisabled: boolean
-  children: React.ReactNode
-}) {
-  return (
-    <button
-      onClick={onClick}
-      disabled={isDisabled}
-      style={{
-        background: 'rgba(255,255,255,0.03)',
-        border: '1px solid rgba(34,197,94,0.18)',
-        borderRadius: 8,
-        padding: '7px 10px',
-        cursor: isDisabled ? 'not-allowed' : 'pointer',
-        color: 'rgba(232,245,238,0.7)',
-        fontSize: 11,
-        textAlign: 'left',
-        lineHeight: 1.45,
-        fontFamily: "'Sora', sans-serif",
-        opacity: isDisabled ? 0.5 : 1,
-        transition: 'all 0.15s',
-        width: '100%',
-      }}
-      onMouseEnter={e => {
-        if (isDisabled) return
-        const b = e.currentTarget
-        b.style.background = 'rgba(34,197,94,0.1)'
-        b.style.color = '#e8f5ee'
-        b.style.borderColor = 'rgba(34,197,94,0.45)'
-      }}
-      onMouseLeave={e => {
-        const b = e.currentTarget
-        b.style.background = 'rgba(255,255,255,0.03)'
-        b.style.color = 'rgba(232,245,238,0.7)'
-        b.style.borderColor = 'rgba(34,197,94,0.18)'
-      }}
-    >
-      <span style={{ color: '#22c55e', fontWeight: 800, marginRight: 4 }}>
-        {children}
-      </span>
-    </button>
-  )
-}
-
 export default function MapChatWidget({ lang }: Props) {
-  const [open, setOpen] = useState(false)
-  const [msgs, setMsgs] = useState<{ role: 'user' | 'ai'; text: string }[]>([])
+  const [open,    setOpen]    = useState(false)
+  const [msgs,    setMsgs]    = useState<{ role: 'user' | 'ai'; text: string }[]>([])
   const [loading, setLoading] = useState(false)
-  const [badge, setBadge] = useState(false)
+  const [badge,   setBadge]   = useState(false)
   const bottomRef = useRef<HTMLDivElement>(null)
 
   const qs = QA[lang as 'rw' | 'en'] ?? QA.en
 
+  // Show attention badge after 3 s
   useEffect(() => {
     const t = setTimeout(() => setBadge(true), 3000)
     return () => clearTimeout(t)
   }, [])
 
+  // Scroll to bottom
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
   }, [msgs, loading])
@@ -182,8 +133,8 @@ export default function MapChatWidget({ lang }: Props) {
       setMsgs([{
         role: 'ai',
         text: lang === 'rw'
-          ? '👋 Muraho! Ndi Safe Plot. Kanda ikibazo hepfo kugira ngo ubone igisubizo cyihuse.'
-          : '👋 Hello! I am Safe Plot. Click a question below for an instant expert answer.',
+          ? '👋 Muraho! Ndi Ba Maso. Kanda ikibazo hepfo kugira ngo ubone igisubizo cyihuse.'
+          : '👋 Hello! I am Ba Maso. Click a question below for an instant expert answer.',
       }])
     }
   }
@@ -204,194 +155,143 @@ export default function MapChatWidget({ lang }: Props) {
   }
 
   return (
-    <Box position="absolute" bottom="52px" right="12px" zIndex={1100}>
+    <div style={{ position: 'absolute', bottom: 52, right: 12, zIndex: 1100 }}>
 
       {/* Panel */}
       {open && (
-        <Box
-          position="absolute"
-          bottom="64px"
-          right={0}
-          w="310px"
-          maxH="440px"
-          display="flex"
-          flexDirection="column"
-          bg="#0f1510"
-          border="1px solid rgba(34,197,94,0.35)"
-          borderRadius="18px"
-          overflow="hidden"
-          boxShadow="0 16px 48px rgba(0,0,0,0.75)"
-        >
-          {/* Header */}
-          <HStack
-            p="11px 14px"
-            bg="#141c15"
-            borderBottom="1px solid rgba(255,255,255,0.06)"
-            justify="space-between"
-            gap={2}
-            flexShrink={0}
-          >
-            <HStack gap={2}>
-              <Box
-                w="8px"
-                h="8px"
-                borderRadius="full"
-                bg="#22c55e"
-                boxShadow="0 0 8px #22c55e"
-              />
-              <Text fontSize="12px" fontWeight={700} color="#e8f5ee" fontFamily="'Sora', sans-serif">
-                Safe Plot AI
-              </Text>
-              <Text
-                fontSize="9px"
-                color="rgba(232,245,238,0.4)"
-                fontFamily="'JetBrains Mono', monospace"
-                letterSpacing="0.06em"
-              >
-                LIVE
-              </Text>
-            </HStack>
+        <div style={{
+          position: 'absolute', bottom: 64, right: 0,
+          width: 310, maxHeight: 440,
+          display: 'flex', flexDirection: 'column',
+          background: '#0f1510',
+          border: '1px solid rgba(34,197,94,0.35)',
+          borderRadius: 18, overflow: 'hidden',
+          boxShadow: '0 16px 48px rgba(0,0,0,0.75)',
+        }}>
 
-            {/* Close button — plain native button to avoid polymorphic type issues */}
-            <button
-              onClick={toggle}
-              style={{
-                background: 'transparent',
-                border: 'none',
-                cursor: 'pointer',
-                color: 'rgba(232,245,238,0.4)',
-                fontSize: 20,
-                lineHeight: 1,
-                padding: 0,
-                display: 'flex',
-                alignItems: 'center',
-              }}
-            >
-              ×
-            </button>
-          </HStack>
+          {/* Header */}
+          <div style={{
+            padding: '11px 14px', flexShrink: 0,
+            background: '#141c15',
+            borderBottom: '1px solid rgba(255,255,255,0.06)',
+            display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+          }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+              <div style={{ width: 8, height: 8, borderRadius: '50%', background: '#22c55e', boxShadow: '0 0 8px #22c55e' }} />
+              <span style={{ fontSize: 12, fontWeight: 700, color: '#e8f5ee', fontFamily: "'Sora',sans-serif" }}>Ba Maso AI</span>
+              <span style={{ fontSize: 9, color: 'rgba(232,245,238,0.4)', fontFamily: "'JetBrains Mono',monospace", letterSpacing: '0.06em' }}>LIVE</span>
+            </div>
+            <button onClick={toggle} style={{ background: 'transparent', border: 'none', cursor: 'pointer', color: 'rgba(232,245,238,0.4)', fontSize: 20, lineHeight: 1, fontFamily: 'inherit' }}>×</button>
+          </div>
 
           {/* Messages */}
-          <Box
-            flex={1}
-            overflowY="auto"
-            p="12px 12px 6px"
-            display="flex"
-            flexDirection="column"
-            gap={2}
-          >
+          <div style={{ flex: 1, overflowY: 'auto', padding: '12px 12px 6px', display: 'flex', flexDirection: 'column', gap: 8 }}>
             {msgs.map((m, i) => (
-              <Box
-                key={i}
-                display="flex"
-                justifyContent={m.role === 'ai' ? 'flex-start' : 'flex-end'}
-              >
-                <Box
-                  maxW="92%"
-                  bg={m.role === 'ai' ? 'rgba(255,255,255,0.04)' : 'rgba(34,197,94,0.15)'}
-                  border={`1px solid ${m.role === 'ai' ? 'rgba(255,255,255,0.07)' : 'rgba(34,197,94,0.3)'}`}
-                  borderRadius={m.role === 'ai' ? '4px 12px 12px 12px' : '12px 4px 12px 12px'}
-                  p="8px 11px"
-                >
+              <div key={i} style={{ display: 'flex', justifyContent: m.role === 'ai' ? 'flex-start' : 'flex-end' }}>
+                <div style={{
+                  maxWidth: '92%',
+                  background: m.role === 'ai' ? 'rgba(255,255,255,0.04)' : 'rgba(34,197,94,0.15)',
+                  border: `1px solid ${m.role === 'ai' ? 'rgba(255,255,255,0.07)' : 'rgba(34,197,94,0.3)'}`,
+                  borderRadius: m.role === 'ai' ? '4px 12px 12px 12px' : '12px 4px 12px 12px',
+                  padding: '8px 11px',
+                }}>
                   {m.role === 'ai' && (
-                    <Text
-                      fontSize="8px"
-                      fontWeight={700}
-                      color="#22c55e"
-                      mb={1}
-                      letterSpacing="0.1em"
-                      fontFamily="'JetBrains Mono', monospace"
-                    >
-                      Safe Plot AI
-                    </Text>
+                    <div style={{ fontSize: 8, fontWeight: 700, color: '#22c55e', marginBottom: 3, letterSpacing: '0.1em', fontFamily: "'JetBrains Mono',monospace" }}>
+                      BA MASO AI
+                    </div>
                   )}
-                  <Text
-                    fontSize="12px"
-                    color="#e8f5ee"
-                    lineHeight={1.65}
-                    m={0}
-                    whiteSpace="pre-wrap"
-                    fontFamily="'Sora', sans-serif"
-                  >
+                  <p style={{ fontSize: 12, color: '#e8f5ee', lineHeight: 1.65, margin: 0, whiteSpace: 'pre-wrap', fontFamily: "'Sora',sans-serif" }}>
                     {m.text}
-                  </Text>
-                </Box>
-              </Box>
+                  </p>
+                </div>
+              </div>
             ))}
 
             {loading && (
-              <Box display="flex" justifyContent="flex-start">
-                <HStack
-                  bg="rgba(255,255,255,0.04)"
-                  border="1px solid rgba(34,197,94,0.2)"
-                  borderRadius="4px 12px 12px 12px"
-                  p="8px 12px"
-                  gap={2}
-                >
+              <div style={{ display: 'flex', justifyContent: 'flex-start' }}>
+                <div style={{
+                  background: 'rgba(255,255,255,0.04)',
+                  border: '1px solid rgba(34,197,94,0.2)',
+                  borderRadius: '4px 12px 12px 12px',
+                  padding: '8px 12px', display: 'flex', alignItems: 'center', gap: 8,
+                }}>
                   <BaMasoLoader size={22} />
-                  <Text fontSize="11px" color="#22c55e" fontWeight={600} fontFamily="'Sora', sans-serif">
+                  <span style={{ fontSize: 11, color: '#22c55e', fontWeight: 600, fontFamily: "'Sora',sans-serif" }}>
                     {lang === 'rw' ? 'Iratekereza...' : 'Thinking...'}
-                  </Text>
-                </HStack>
-              </Box>
+                  </span>
+                </div>
+              </div>
             )}
             <div ref={bottomRef} />
-          </Box>
+          </div>
 
-          {/* Quick question buttons */}
-          <VStack
-            p="8px 10px 12px"
-            borderTop="1px solid rgba(255,255,255,0.06)"
-            bg="#0f1510"
-            align="stretch"
-            gap={1}
-          >
-            <Text
-              fontSize="9px"
-              color="rgba(232,245,238,0.3)"
-              fontWeight={700}
-              letterSpacing="0.09em"
-              textTransform="uppercase"
-              mb={1}
-              fontFamily="'Sora', sans-serif"
-            >
+          {/* Pre-prompt buttons */}
+          <div style={{
+            padding: '8px 10px 12px',
+            borderTop: '1px solid rgba(255,255,255,0.06)',
+            background: '#0f1510',
+            display: 'flex', flexDirection: 'column', gap: 5,
+          }}>
+            <div style={{ fontSize: 9, color: 'rgba(232,245,238,0.3)', fontWeight: 700, letterSpacing: '0.09em', textTransform: 'uppercase', marginBottom: 2, fontFamily: "'Sora',sans-serif" }}>
               {lang === 'rw' ? 'Ibibazo bisanzwe:' : 'Quick questions:'}
-            </Text>
+            </div>
             {qs.map((qa, i) => (
-              <QuickBtn
+              <button
                 key={i}
                 onClick={() => handleQ(qa)}
-                isDisabled={loading}
+                disabled={loading}
+                style={{
+                  background: 'rgba(255,255,255,0.03)',
+                  border: '1px solid rgba(34,197,94,0.18)',
+                  borderRadius: 8, padding: '7px 10px',
+                  cursor: loading ? 'not-allowed' : 'pointer',
+                  color: 'rgba(232,245,238,0.7)',
+                  fontSize: 11, textAlign: 'left', lineHeight: 1.45,
+                  fontFamily: "'Sora',sans-serif",
+                  opacity: loading ? 0.5 : 1, transition: 'all 0.15s',
+                }}
+                onMouseEnter={e => {
+                  if (!loading) {
+                    const b = e.currentTarget
+                    b.style.background = 'rgba(34,197,94,0.1)'
+                    b.style.color = '#e8f5ee'
+                    b.style.borderColor = 'rgba(34,197,94,0.45)'
+                  }
+                }}
+                onMouseLeave={e => {
+                  const b = e.currentTarget
+                  b.style.background = 'rgba(255,255,255,0.03)'
+                  b.style.color = 'rgba(232,245,238,0.7)'
+                  b.style.borderColor = 'rgba(34,197,94,0.18)'
+                }}
               >
-                <span style={{ color: '#22c55e', fontWeight: 800, marginRight: 4 }}>{i + 1}.</span>
+                <span style={{ color: '#22c55e', fontWeight: 800, marginRight: 5 }}>{i + 1}.</span>
                 {qa.q}
-              </QuickBtn>
+              </button>
             ))}
-          </VStack>
-        </Box>
+          </div>
+        </div>
       )}
 
-      {/* Floating chat bubble — plain native button */}
+      {/* ── The white chat bubble button ── */}
       <button
         onClick={toggle}
         title={lang === 'rw' ? 'Baza AI' : 'Ask AI'}
         style={{
-          width: 52,
-          height: 52,
-          borderRadius: '50%',
+          width: 52, height: 52, borderRadius: '50%',
           background: open ? '#22c55e' : 'white',
           border: open ? '2px solid rgba(34,197,94,0.4)' : '2px solid rgba(34,197,94,0.3)',
           cursor: 'pointer',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          boxShadow: open ? '0 4px 20px rgba(34,197,94,0.45)' : '0 4px 20px rgba(0,0,0,0.6)',
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          boxShadow: open
+            ? '0 4px 20px rgba(34,197,94,0.45)'
+            : '0 4px 20px rgba(0,0,0,0.6)',
           transition: 'all 0.2s',
           position: 'relative',
           fontSize: 22,
-          padding: 0,
         }}
       >
+        {/* Chat icon SVG — shows white on open (green bg), green on closed (white bg) */}
         {open ? (
           <span style={{ color: 'white', fontSize: 22, fontWeight: 900, lineHeight: 1 }}>×</span>
         ) : (
@@ -408,26 +308,16 @@ export default function MapChatWidget({ lang }: Props) {
 
         {/* Notification dot */}
         {badge && !open && (
-          <Box
-            position="absolute"
-            top="-2px"
-            right="-2px"
-            w="16px"
-            h="16px"
-            borderRadius="full"
-            bg="#ef4444"
-            border="2.5px solid #0b0f0c"
-            display="flex"
-            alignItems="center"
-            justifyContent="center"
-            fontSize="8px"
-            fontWeight={900}
-            color="white"
-          >
-            !
-          </Box>
+          <div style={{
+            position: 'absolute', top: -2, right: -2,
+            width: 16, height: 16, borderRadius: '50%',
+            background: '#ef4444',
+            border: '2.5px solid #0b0f0c',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            fontSize: 8, fontWeight: 900, color: 'white',
+          }}>!</div>
         )}
       </button>
-    </Box>
+    </div>
   )
 }
