@@ -5,7 +5,7 @@
 ### *Reba Umutekano w'Ubutaka Mbere yo Kubaka*
 
 [![Live Demo](https://img.shields.io/badge/Live%20Demo-safeplot.vercel.app-22c55e?style=for-the-badge&logo=vercel)](https://safeplot.vercel.app)
-[![Backend API](https://img.shields.io/badge/Backend%20API-render.com-0F4C35?style=for-the-badge&logo=render)]([https://safeplot-api.onrender.com](https://safe-plot-975524235617.us-central1.run.app/)
+[![Backend API](https://img.shields.io/badge/Backend%20API-render.com-0F4C35?style=for-the-badge&logo=render)]([https://safe-plot-975524235617.us-central1.run.app/](https://safe-plot-975524235617.us-central1.run.app/)
 [![Built with Chakra UI](https://img.shields.io/badge/Chakra%20UI-v3-319795?style=for-the-badge&logo=chakraui)](https://chakra-ui.com)
 [![Powered by Gemini](https://img.shields.io/badge/Gemini-2.0%20Flash-4285F4?style=for-the-badge&logo=google)](https://ai.google.dev)
 [![Lyftathon 2026](https://img.shields.io/badge/Lyftathon-2026%20Kigali-f97316?style=for-the-badge)](https://lyftathon.com)
