@@ -1,6 +1,6 @@
 import { useState, useCallback, useEffect, useRef } from 'react'
 import {
-  MapContainer, TileLayer, Marker, ZoomControl, useMapEvents, useMap,
+  MapContainer, Marker, ZoomControl, useMapEvents, useMap,
 } from 'react-leaflet'
 import L from 'leaflet'
 import { useAppStore } from '../../store/useAppStore'
@@ -61,20 +61,23 @@ const makeSearchPin = () => L.divIcon({
 // Custom layer control to fix the satellite ↔ map switching
 function CustomLayerControl() {
   const map = useMap()
-  const [active, setActive] = useState<'satellite'|'map'>('satellite')
+  // DEFAULT TO MAP (not satellite)
+  const [active, setActive] = useState<'satellite'|'map'>('map')
   const satRef = useRef<L.TileLayer|null>(null)
   const mapRef = useRef<L.TileLayer|null>(null)
 
   useEffect(() => {
+    // Create satellite layer (Stadia) but DON'T add it by default
     satRef.current = L.tileLayer(
       'https://tiles.stadiamaps.com/tiles/alidade_satellite/{z}/{x}/{y}.jpg',
       { maxZoom:20, attribution:'© Stadia Maps' }
-    ).addTo(map)
+    )
 
+    // Create map layer (OSM) and ADD IT by default
     mapRef.current = L.tileLayer(
       'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
       { maxZoom:19, attribution:'© OpenStreetMap' }
-    )
+    ).addTo(map)
 
     return () => {
       satRef.current?.remove()
