@@ -9,10 +9,9 @@ import { useAppStore } from '../store/useAppStore'
 export default function MapPage() {
   const { i18n } = useTranslation()
   const { currentResult } = useAppStore()
-  const lang = i18n.language as 'rw'|'en'
-  const [showPanel,       setShowPanel]       = useState(false)
+  const lang = i18n.language as 'rw' | 'en'
+  const [showPanel, setShowPanel] = useState(false)
   const [showMobileSheet, setShowMobileSheet] = useState(false)
-
   const handleResultReady = useCallback(()=>{
     setShowPanel(true)
     setShowMobileSheet(true)

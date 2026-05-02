@@ -23,6 +23,25 @@ export default function MapPage() {
   }, [])
 
   const handleResultReady = useCallback(() => setShowPanel(true), [])
+<<<<<<< HEAD
+  const handleClose       = useCallback(() => setShowPanel(false), [])
+
+  return (
+    <Box
+      height="100vh"
+      bg="var(--bg, #0b0f0c)"
+      display="flex"
+      flexDirection="column"
+      overflow="hidden"
+    >
+      <NavBar />
+
+      {/* Main area */}
+      <Box flex={1} display="flex" overflow="hidden" position="relative">
+
+        {/* Map */}
+        <Box flex={1} position="relative" overflow="hidden" minW={0}>
+=======
   const handleClose        = useCallback(() => setShowPanel(false), [])
 
   return (
@@ -34,12 +53,108 @@ export default function MapPage() {
 
         {/* Map — always fills available width */}
         <div style={{ flex: 1, position: 'relative', overflow: 'hidden', minWidth: 0 }}>
+>>>>>>> 9006bcd994066a27cf1a3601b35966fb04fe02db
           <KigaliMap
             lang={lang}
             onResultReady={handleResultReady}
             onClose={showPanel ? handleClose : undefined}
             hasResult={showPanel && !!currentResult}
           />
+<<<<<<< HEAD
+          <MapChatWidget lang={lang} />
+        </Box>
+
+        {/* Desktop sidebar */}
+        {!isMobile && showPanel && currentResult && (
+          <Box
+            width="380px"
+            flexShrink={0}
+            bg="var(--bg2, #0f1510)"
+            borderLeft="1px solid var(--border, rgba(255,255,255,0.07))"
+            display="flex"
+            flexDirection="column"
+            position="relative"
+            overflow="hidden"
+          >
+            <Button
+              onClick={handleClose}
+              title={lang === 'rw' ? 'Funga — subira ku makarita' : 'Close — back to map'}
+              position="absolute"
+              top="10px"
+              right="10px"
+              zIndex={30}
+              width="32px"
+              height="32px"
+              minW="unset"
+              borderRadius="full"
+              bg="#22c55e"
+              border="2px solid white"
+              color="white"
+              fontSize="18px"
+              fontWeight={900}
+              lineHeight={1}
+              p={0}
+              boxShadow="0 2px 12px rgba(34,197,94,0.5)"
+              _hover={{ bg: '#ef4444' }}
+            >×</Button>
+            <ResultPanel lang={lang} />
+          </Box>
+        )}
+      </Box>
+
+      {/* Mobile bottom sheet */}
+      {isMobile && showPanel && currentResult && (
+        <Box
+          position="fixed"
+          bottom={0}
+          left={0}
+          right={0}
+          height="65vh"
+          bg="rgba(11,15,12,0.98)"
+          borderTop="1px solid rgba(255,255,255,0.1)"
+          borderRadius="20px 20px 0 0"
+          zIndex={800}
+          overflow="hidden"
+          display="flex"
+          flexDirection="column"
+        >
+          {/* Handle row */}
+          <Box
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            px={4}
+            pt="10px"
+            pb={1}
+            flexShrink={0}
+            position="relative"
+          >
+            <Box width="36px" height="3px" borderRadius="999px" bg="rgba(255,255,255,0.15)" />
+            <Button
+              onClick={handleClose}
+              position="absolute"
+              right="14px"
+              width="32px"
+              height="32px"
+              minW="unset"
+              borderRadius="full"
+              bg="#22c55e"
+              border="2px solid white"
+              color="white"
+              fontSize="18px"
+              fontWeight={900}
+              p={0}
+              boxShadow="0 2px 10px rgba(34,197,94,0.4)"
+              _hover={{ bg: '#ef4444' }}
+            >×</Button>
+          </Box>
+          <Box flex={1} overflow="hidden">
+            <ResultPanel lang={lang} />
+          </Box>
+        </Box>
+      )}
+    </Box>
+=======
 
           {/* 💬 Chat widget — ALWAYS on the map, not gated by result */}
           <MapChatWidget lang={lang} />
@@ -114,5 +229,6 @@ export default function MapPage() {
         </div>
       )}
     </div>
+>>>>>>> 9006bcd994066a27cf1a3601b35966fb04fe02db
   )
 }
