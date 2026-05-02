@@ -92,8 +92,8 @@ No GIS training. No desktop. No English required.
 └─────────────────────────────────────────────────────────────────┘
 ```
 
-> 📐 **[View Full Architecture Diagram →]
-![Uploading MacBook Pro 16_ - 3.png…]()
+[> 📐 **[View Full Architecture Diagram →]
+![Uploading MacBook Pro 16_ - 3.png…]()](https://bcc-sand-pi.vercel.app/)
 
 
 ---
@@ -290,10 +290,10 @@ Then just run `npm run dev` in the frontend directory — no Python setup requir
 
 | Service | URL |
 |---|---|
-| **Frontend (PWA)** | https://safeplot.vercel.app |
-| **Backend API** | https://safeplot-api.onrender.com |
+| **Frontend (PWA)** | https://bcc-sand-pi.vercel.app/ |
+| **Backend API** | https://safe-plot-975524235617.us-central1.run.app/ |
 | **API Health Check** | https://safeplot-api.onrender.com/api/v1/health |
-| **API Docs (Swagger)** | https://safeplot-api.onrender.com/docs |
+| **API Docs (Swagger)** | https://bcc-sand-pi.vercel.app/docs |
 
 > ⚠️ **Note:** The backend is hosted on Render.com free tier and may take 30–60 seconds to wake up on the first request after inactivity. The 10 demo locations are served from memory and will always respond instantly.
 
