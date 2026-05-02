@@ -1,0 +1,118 @@
+import { useCallback, useState, useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
+import KigaliMap from './KigaliMap'
+import ResultPanel from './ResultPanel'
+import NavBar from '../ui/NavBar'
+import MapChatWidget from '../chat/MapChatWidget'
+import { useAppStore } from '../../store/useAppStore'
+
+export default function MapPage() {
+  const { i18n } = useTranslation()
+  const { currentResult } = useAppStore()
+  const lang = i18n.language as 'rw' | 'en'
+
+  // Desktop: show sidebar. Mobile: show bottom sheet.
+  const [showPanel, setShowPanel] = useState(false)
+  const [isMobile,  setIsMobile]  = useState(false)
+
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 1024)
+    check()
+    window.addEventListener('resize', check)
+    return () => window.removeEventListener('resize', check)
+  }, [])
+
+  const handleResultReady = useCallback(() => setShowPanel(true), [])
+  const handleClose        = useCallback(() => setShowPanel(false), [])
+
+  return (
+    <div style={{ height: '100vh', background: 'var(--bg,#0b0f0c)', display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
+      <NavBar />
+
+      {/* ── Main area: map + optional sidebar (desktop only) ── */}
+      <div style={{ flex: 1, display: 'flex', overflow: 'hidden', position: 'relative' }}>
+
+        {/* Map — always fills available width */}
+        <div style={{ flex: 1, position: 'relative', overflow: 'hidden', minWidth: 0 }}>
+          <KigaliMap
+            lang={lang}
+            onResultReady={handleResultReady}
+            onClose={showPanel ? handleClose : undefined}
+            hasResult={showPanel && !!currentResult}
+          />
+
+          {/* 💬 Chat widget — ALWAYS on the map, not gated by result */}
+          <MapChatWidget lang={lang} />
+        </div>
+
+        {/* Desktop sidebar — ONLY on screens ≥ 1024px and ONLY when result is ready */}
+        {!isMobile && showPanel && currentResult && (
+          <div style={{
+            width: 380, flexShrink: 0,
+            background: 'var(--bg2,#0f1510)',
+            borderLeft: '1px solid var(--border,rgba(255,255,255,0.07))',
+            display: 'flex', flexDirection: 'column',
+            position: 'relative', overflow: 'hidden',
+          }}>
+            {/* Close button — bright green so always visible */}
+            <button
+              onClick={handleClose}
+              title={lang === 'rw' ? 'Funga — subira ku makarita' : 'Close — back to map'}
+              style={{
+                position: 'absolute', top: 10, right: 10, zIndex: 30,
+                width: 32, height: 32, borderRadius: '50%',
+                background: '#22c55e',
+                border: '2px solid white',
+                color: 'white', fontSize: 18, fontWeight: 900, lineHeight: 1,
+                cursor: 'pointer',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                boxShadow: '0 2px 12px rgba(34,197,94,0.5)',
+                transition: 'all 0.15s',
+              }}
+              onMouseEnter={e => (e.currentTarget.style.background = '#ef4444')}
+              onMouseLeave={e => (e.currentTarget.style.background = '#22c55e')}
+            >×</button>
+            <ResultPanel lang={lang} />
+          </div>
+        )}
+      </div>
+
+      {/* Mobile bottom sheet — ONLY on screens < 1024px */}
+      {isMobile && showPanel && currentResult && (
+        <div style={{
+          position: 'fixed', bottom: 0, left: 0, right: 0,
+          height: '65vh',
+          background: 'var(--sheet-bg,rgba(11,15,12,0.98))',
+          borderTop: '1px solid rgba(255,255,255,0.1)',
+          borderRadius: '20px 20px 0 0',
+          zIndex: 800, overflow: 'hidden',
+          display: 'flex', flexDirection: 'column',
+        }}>
+          {/* Handle row */}
+          <div style={{
+            display: 'flex', justifyContent: 'center', alignItems: 'center',
+            padding: '10px 16px 4px', flexShrink: 0, position: 'relative',
+          }}>
+            <div style={{ width: 36, height: 3, borderRadius: 999, background: 'rgba(255,255,255,0.15)' }} />
+            {/* Bright green close on mobile too */}
+            <button
+              onClick={handleClose}
+              style={{
+                position: 'absolute', right: 14,
+                width: 32, height: 32, borderRadius: '50%',
+                background: '#22c55e', border: '2px solid white',
+                color: 'white', fontSize: 18, fontWeight: 900,
+                cursor: 'pointer',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                boxShadow: '0 2px 10px rgba(34,197,94,0.4)',
+              }}
+            >×</button>
+          </div>
+          <div style={{ flex: 1, overflow: 'hidden' }}>
+            <ResultPanel lang={lang} />
+          </div>
+        </div>
+      )}
+    </div>
+  )
+}
